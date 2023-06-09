@@ -1,0 +1,11 @@
+Name: Lucas Loughner
+
+How well my implementation works:
+
+Additional Functionality:
+
+Limitations:
+Due to how I chose to store both the free block list and the structure for tracking what data blocks are allocated to an inode, there are limitations on file/file system size.
+Since I used a bitmap that starts in the superblock (with two more allocated blocks to support variable-sized file systems), the overall size of the file system is a function of the blocksize.
+Namely, the overall size of the file system must be at most ((8 + 8* [(BLOCKSIZE - 3) + (2*BLOCKSIZE)]) * BLOCKSIZE) bytes
+This was calculated using the following logic: The first 8 blocks are always reserved for file system metadata (superblock, free block bitmap, inode directory) and the amount of free blocks allowed are determined by the size of the bitmap (with each bit corresponding to a unique block), which has a max size of 8 multiplied by the sum of the remaining bytes in the superblock and the next two blocks. This can be calculated as: 8*[(BLOCKSIZE-3) + (2*BLOCKSIZE)]
